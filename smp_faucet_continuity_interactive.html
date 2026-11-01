@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#39BDFF">
+<title>Faucet Flow Lab — สมการความต่อเนื่อง | SmartMathPro</title>
+<style>
+:root{--blue:#168CDD;--sky:#39BDFF;--ink:#173954;--sub:#5A7489;--line:#D8EAF5;--light:#F2FAFF;--green:#148F82;--orange:#F39A43;--a:#0B9CDE;--b:#FC8A3E}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#F4FBFF 0%,#FFFFFF 75%);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:var(--ink)}button,input{font:inherit}button:focus-visible,input:focus-visible{outline:3px solid #FFCE60;outline-offset:2px}
+.shell{max-width:860px;margin:auto;padding:18px 13px 36px}.hero{background:linear-gradient(124deg,#37B9FF,#77D8FC);border-radius:25px;padding:23px 24px 20px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(36,124,181,.14)}.hero:before{content:"";position:absolute;width:190px;height:190px;right:-66px;top:-75px;border:25px solid rgba(255,255,255,.20);border-radius:50%}.eyebrow{font-size:11px;letter-spacing:1px;font-weight:900;color:#125981}.hero h1{font-size:clamp(25px,4.8vw,36px);margin:7px 0 9px;line-height:1.24;color:#083B60;max-width:660px}.hero p{font-size:14px;line-height:1.75;color:#124D73;margin:0;max-width:680px}.mini-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.mini-badges span{font-size:12px;background:#FFFFFF7D;border:1px solid #FFFFFFAA;border-radius:999px;padding:6px 11px;font-weight:800;color:#155E80}
+.card{border-radius:23px;background:white;border:1px solid var(--line);box-shadow:0 5px 25px rgba(33,111,159,.06);margin-top:15px;padding:16px}.card h2{font-size:18px;margin:0 0 6px}.small{font-size:12px;color:var(--sub);line-height:1.65}.workspace{display:grid;grid-template-columns:minmax(0,1.19fr) minmax(275px,.81fr);gap:13px;align-items:start}.visual{border:1px solid #D9ECF8;background:linear-gradient(180deg,#F1FAFF,#FCFEFF);border-radius:20px;padding:10px;overflow:hidden}.canvas-wrap{position:relative;width:100%}.visual canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}.canvas-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}.small-label{font-size:11px;font-weight:900;letter-spacing:.5px;color:#6086A0}.animate-label{font-size:11px;font-weight:800;background:#E4F7FF;color:#127EAA;border-radius:99px;padding:6px 10px}.canvas-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:9px}.canvas-legend{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.legend-part{display:inline-flex;align-items:center;gap:5px;color:#4C728A;font-size:11px;font-weight:700}.swatch{width:9px;height:9px;border-radius:50%}.swatch.a{background:var(--a)}.swatch.b{background:var(--b)}
+.controls{display:grid;gap:11px}.panel{border:1px solid #DDEDF7;border-radius:18px;padding:14px;background:#FBFEFF}.panel h3{font-size:14px;margin:0 0 12px}.field{margin-top:13px}.field:first-of-type{margin-top:0}.field-line{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:5px;font-size:12px;font-weight:750}.value{background:#E9F7FF;color:#1479B2;border-radius:8px;padding:5px 8px;font-size:12px;font-weight:900;white-space:nowrap;min-width:60px;text-align:center}input[type=range]{accent-color:#189CE2;width:100%;cursor:pointer}.range-hints{display:flex;justify-content:space-between;font-size:10px;color:#7892A5}.position-row{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:8px}.position-row strong{font-size:12px}.position-row .value{min-width:76px}.position-row.a strong{color:var(--a)}.position-row.b strong{color:#E87C34}.posbox{padding:10px 12px;background:white;border:1px solid #DFEFF8;border-radius:13px;margin-top:9px}.posbox input{margin-top:3px}
+.btn{border:1px solid #BCDDEC;color:#166B9A;background:#EAF8FF;border-radius:12px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:850;transition:filter .15s}.btn:hover{filter:brightness(.96)}.btn.primary{color:white;background:#147EBD;border-color:#147EBD}.button-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.toggle{display:flex;align-items:center;gap:7px;font-size:12px;color:#567487;font-weight:700;cursor:pointer}.toggle input{accent-color:#159AD5}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}.readout .stat{padding:13px;border-radius:16px;border:1px solid #D7EAF5;background:white}.readout .stat.a{border-top:4px solid var(--a)}.readout .stat.b{border-top:4px solid var(--b)}.stat h3{font-size:13px;margin:0 0 8px}.stat.a h3{color:var(--a)}.stat.b h3{color:#DE782F}.num-big{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;color:#173F61}.num-big small{font-size:12px;font-weight:650;color:#6E8698}.stat p{margin:4px 0;font-size:12px;color:#496C83}.stat p b{color:#1C506A;font-variant-numeric:tabular-nums}
+.equation{border-radius:18px;background:linear-gradient(100deg,#E9F8FF,#FFF9E9);border:1px solid #CDE8EF;padding:16px;margin-top:13px}.eq-title{color:#2F6E92;font-size:12px;font-weight:900}.eq-main{font-size:clamp(22px,4vw,30px);font-weight:900;letter-spacing:.15px;margin:7px 0 12px;color:#124B77;text-align:center}.eq-main .a{color:var(--a)}.eq-main .b{color:#E87C34}.proof{display:grid;grid-template-columns:1fr 1fr;gap:9px}.proof>div{background:#FFFFFFAA;border:1px solid #FFFFFFF0;border-radius:13px;text-align:center;padding:9px}.proof .label{font-size:11px;color:#54788B;font-weight:800}.proof .number{font-size:16px;font-weight:900;margin-top:4px}.proof .number small{font-size:11px;font-weight:600}.core{display:flex;align-items:flex-start;gap:9px;margin-top:11px;color:#3F627A;font-size:12px;line-height:1.65}.check{width:21px;height:21px;border-radius:50%;background:#DFF8E6;color:#19875A;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:900}
+.explanation{padding:14px 15px;border:1px solid #E4EDF5;border-radius:15px;background:#FAFDFF;line-height:1.75;font-size:13px;color:#385A70;margin-top:12px}.explanation strong{color:#0B6C9F}.steps{display:grid;gap:8px;margin-top:10px}.steps>div{display:flex;gap:8px;align-items:flex-start}.steps em{font-style:normal;background:#DDF3FF;color:#1676AE;font-size:11px;font-weight:900;border-radius:8px;padding:4px 8px;flex-shrink:0}.fine{font-size:11px;color:#7990A0;line-height:1.7;margin:12px 2px 0}
+@media(max-width:710px){.workspace{grid-template-columns:1fr}.hero{padding:20px}.readout{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.shell{padding:10px 8px 26px}.card{padding:11px;border-radius:17px}.visual{padding:7px}.hero{border-radius:19px}.num-big{font-size:18px}.eq-main{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero">
+  <div class="eyebrow">SMARTMATHPRO · PHYSICS LAB</div>
+  <h1>น้ำไหลจากก๊อก ทำไมสายน้ำจึงเล็กลง?</h1>
+  <p>ทดลองสมการความต่อเนื่องของของไหล เลื่อนจุดวัดบนสายน้ำแล้วสังเกตว่า เมื่อสายน้ำไหลลงมา <b>ความเร็วเพิ่มขึ้น</b> แต่ <b>พื้นที่หน้าตัดลดลง</b> อย่างไร</p>
+  <div class="mini-badges"><span>ปรับความแรงของน้ำ</span><span>เลื่อนตำแหน่งจุดวัด</span><span>คำนวณทันที</span></div>
+</header>
+
+<section class="card">
+  <div class="workspace">
+    <div class="visual">
+      <div class="canvas-top"><span class="small-label">FAUCET SIMULATION</span><span class="animate-label" id="playState">● กำลังไหล</span></div>
+      <div class="canvas-wrap"><canvas id="flowCanvas" width="540" height="610" aria-label="จำลองการไหลของน้ำจากก๊อก พร้อมตำแหน่งหน้าตัด A และ B"></canvas></div>
+      <div class="canvas-actions"><div class="canvas-legend"><span class="legend-part"><i class="swatch a"></i> จุด A</span><span class="legend-part"><i class="swatch b"></i> จุด B</span></div><div class="button-row" style="margin:0"><button class="btn" id="pauseBtn" type="button">⏸ หยุดภาพ</button><button class="btn" id="resetBtn" type="button">↻ เริ่มใหม่</button></div></div>
+      <p class="small" style="margin:7px 2px 1px">ลากเส้น A / B บนภาพขึ้น–ลงได้ หรือใช้แถบเลื่อนด้านขวา</p>
+    </div>
+
+    <div class="controls">
+      <div class="panel">
+        <h3>ปรับการไหลของน้ำ</h3>
+        <div class="field"><div class="field-line"><label for="v0">ความเร็วที่ปากก๊อก</label><span class="value" id="v0Text">1.0 m/s</span></div><input type="range" id="v0" min="0.3" max="3.5" step="0.1" value="1.0"><div class="range-hints"><span>เบา</span><span>แรง</span></div></div>
+        <div class="field"><div class="field-line"><label for="d0">เส้นผ่านศูนย์กลางปากก๊อก</label><span class="value" id="d0Text">12 mm</span></div><input type="range" id="d0" min="4" max="18" step="1" value="12"><div class="range-hints"><span>เล็ก</span><span>ใหญ่</span></div></div>
+        <div class="field"><div class="field-line"><label for="h">ความสูงจากก๊อกถึงอ่าง</label><span class="value" id="hText">80 cm</span></div><input type="range" id="h" min="20" max="120" step="5" value="80"><div class="range-hints"><span>20 cm</span><span>120 cm</span></div></div>
+      </div>
+      <div class="panel">
+        <h3>เลือกจุดเปรียบเทียบ</h3>
+        <div class="posbox"><div class="position-row a"><strong>● จุด A (ด้านบน)</strong><span class="value" id="y1Text">10 cm</span></div><input type="range" id="y1" min="0" max="80" step="1" value="10"></div>
+        <div class="posbox"><div class="position-row b"><strong>● จุด B (ด้านล่าง)</strong><span class="value" id="y2Text">60 cm</span></div><input type="range" id="y2" min="0" max="80" step="1" value="60"></div>
+        <div class="button-row"><button class="btn" type="button" id="sampleBtn">ดูตัวอย่างจุดใกล้–ไกล</button></div>
+        <label class="toggle" style="margin-top:14px"><input type="checkbox" id="particles" checked> แสดงการเคลื่อนที่ของอนุภาคน้ำ</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>เปรียบเทียบ 2 ตำแหน่งบนสายน้ำ</h2>
+  <div class="small">เลื่อนจุด A และ B แล้วสังเกตค่าความเร็วกับพื้นที่หน้าตัด</div>
+  <div class="readout">
+    <article class="stat a"><h3>● จุด A</h3><div class="num-big" id="speedA">1.72 <small>m/s</small></div><p>ความเร็วของน้ำ</p><p>พื้นที่หน้าตัด <b id="areaA">0.66 cm²</b></p><p>เส้นผ่านศูนย์กลาง <b id="diamA">9.2 mm</b></p></article>
+    <article class="stat b"><h3>● จุด B</h3><div class="num-big" id="speedB">3.58 <small>m/s</small></div><p>ความเร็วของน้ำ</p><p>พื้นที่หน้าตัด <b id="areaB">0.32 cm²</b></p><p>เส้นผ่านศูนย์กลาง <b id="diamB">6.4 mm</b></p></article>
+  </div>
+  <div class="equation"><div class="eq-title">สมการความต่อเนื่อง (Continuity Equation)</div><div class="eq-main"><span class="a">A₁v₁</span> = <span class="b">A₂v₂</span> = Q</div><div class="proof"><div><div class="label">อัตราการไหล ณ จุด A</div><div class="number" id="qa">0.00 <small>cm³/s</small></div></div><div><div class="label">อัตราการไหล ณ จุด B</div><div class="number" id="qb">0.00 <small>cm³/s</small></div></div></div><div class="core"><span class="check">✓</span><span id="eqNote">ทั้งสองจุดมีอัตราการไหลเชิงปริมาตรเท่ากัน แม้ความเร็วและพื้นที่หน้าตัดต่างกัน</span></div></div>
+  <div class="explanation"><strong>ทำไมสายน้ำจึงแคบลง?</strong><div class="steps"><div><em>1</em><span>น้ำที่ออกจากก๊อกถูกแรงโน้มถ่วงทำให้ไหลเร็วขึ้นเมื่อเคลื่อนลงต่ำ</span></div><div><em>2</em><span>เมื่อน้ำมีความหนาแน่นคงที่ และไหลอย่างต่อเนื่อง ปริมาตรน้ำที่ผ่านแต่ละหน้าตัดต่อวินาทีต้องเท่ากัน</span></div><div><em>3</em><span>ดังนั้นเมื่อความเร็วเพิ่มขึ้น พื้นที่หน้าตัดจึงต้องลดลง สายน้ำเลยดูเล็กลงเรื่อย ๆ</span></div></div></div>
+  <p class="fine">แบบจำลองนี้สมมติว่าเป็นน้ำที่ไหลต่อเนื่อง คงตัว ไม่อัดตัว และไม่คิดแรงต้านอากาศ แรงตึงผิว ความหนืด หรือการแตกเป็นหยดของสายน้ำ ค่าเวลาและความเร็วเป็นแบบจำลองเชิงทฤษฎี ไม่ใช่การวัดจากก๊อกน้ำจริง โดยใช้ g = 9.81 m/s²</p>
+</section>
+</div>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('flowCanvas'); const ctx=canvas.getContext('2d');
+const el=id=>document.getElementById(id);
+const ctl={v0:el('v0'),d0:el('d0'),h:el('h'),y1:el('y1'),y2:el('y2'),particles:el('particles')};
+const g=9.81, W=540,H=610, cx=245, yTop=139, yBottom=518;
+let running=true, elapsed=0, previous=0, dragging=null;
+let state={};
+function values(){
+  const v0=+ctl.v0.value,d0=+ctl.d0.value/1000,h=+ctl.h.value/100;
+  let y1=+ctl.y1.value/100,y2=+ctl.y2.value/100;
+  if(y1>=y2){y2=Math.min(h,y1+.01); if(y2===y1) y1=Math.max(0,y2-.01)}
+  return {v0,d0,h,y1,y2,A0:Math.PI*(d0/2)**2,Q:Math.PI*(d0/2)**2*v0};
+}
+function at(y){const {v0,d0,A0,Q}=state;const v=Math.sqrt(v0*v0+2*g*y); const A=Q/v; return {v,A,d:Math.sqrt(4*A/Math.PI)};}
+const format=(v,n=2)=>v.toFixed(n);
+const mm=d=>`${format(d*1000,1)} mm`;
+const cm2=a=>`${format(a*10000,2)} cm²`;
+function yScreen(y){return yTop + (y/state.h)*(yBottom-yTop)}
+function physicalY(yPx){return Math.max(0,Math.min(state.h,(yPx-yTop)/(yBottom-yTop)*state.h))}
+function sync(updateFrom){
+  const h=+ctl.h.value;
+  ctl.y1.max=String(Math.max(0,h-1)); ctl.y2.max=String(h);
+  if(+ctl.y1.value>h-1)ctl.y1.value=String(Math.max(0,h-1));
+  if(+ctl.y2.value>h)ctl.y2.value=String(h);
+  if(+ctl.y2.value<=+ctl.y1.value){
+    if(updateFrom==='y2') ctl.y1.value=String(Math.max(0,+ctl.y2.value-1));
+    else ctl.y2.value=String(Math.min(h,+ctl.y1.value+1));
+  }
+  state=values();
+  const a=at(state.y1), b=at(state.y2);
+  el('v0Text').textContent=`${format(state.v0,1)} m/s`;el('d0Text').textContent=`${format(state.d0*1000,0)} mm`;el('hText').textContent=`${format(state.h*100,0)} cm`;
+  el('y1Text').textContent=`${format(state.y1*100,0)} cm`;el('y2Text').textContent=`${format(state.y2*100,0)} cm`;
+  el('speedA').innerHTML=`${format(a.v,2)} <small>m/s</small>`;el('speedB').innerHTML=`${format(b.v,2)} <small>m/s</small>`;
+  el('areaA').textContent=cm2(a.A);el('areaB').textContent=cm2(b.A);el('diamA').textContent=mm(a.d);el('diamB').textContent=mm(b.d);
+  el('qa').innerHTML=`${format(a.A*a.v*1e6,1)} <small>cm³/s</small>`;
+  el('qb').innerHTML=`${format(b.A*b.v*1e6,1)} <small>cm³/s</small>`;
+  el('eqNote').textContent=`ทั้งสองจุดมีอัตราการไหล ${format(state.Q*60000,2)} ลิตร/นาที เท่ากัน แม้ความเร็วและพื้นที่หน้าตัดจะต่างกัน`;
+  draw();
+}
+function line(x1,y1,x2,y2,color,width=1,dash=[]){ctx.save();ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
+function rounded(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+function drawFaucet(){
+  ctx.save();ctx.shadowColor='rgba(55,116,147,.20)';ctx.shadowBlur=14;ctx.shadowOffsetY=7;
+  let metal=ctx.createLinearGradient(40,0,285,0);metal.addColorStop(0,'#769BAE');metal.addColorStop(.22,'#EBF8FE');metal.addColorStop(.49,'#91B5C8');metal.addColorStop(.75,'#E3F2F8');metal.addColorStop(1,'#709DB4');
+  rounded(12,45,214,44,14,metal);rounded(188,40,79,96,13,metal);
+  ctx.restore();
+  rounded(185,42,9,48,4,'#658CA1');rounded(210,29,15,28,6,'#648FA6');rounded(175,19,96,17,9,'#83A7BA');rounded(219,9,12,37,6,'#557F97');
+  rounded(207,128,58,15,7,'#6E95AD');rounded(215,134,41,10,5,'#4C7F9F');
+  line(27,54,188,54,'#FFFFFF88',4);
+  ctx.fillStyle='#47718B';ctx.font='bold 14px system-ui';ctx.fillText('ก๊อกน้ำ',302,67);line(299,75,270,105,'#9DB7C7',2);
+}
+function drawBasin(){
+  rounded(72,519,366,23,10,'#86A4B5');rounded(89,516,330,7,3,'#D0E2EA');rounded(92,535,322,30,8,'#A9C4D0');rounded(111,541,285,14,6,'#D3EAF3');
+  ctx.beginPath();ctx.ellipse(cx,523,43,7,0,0,Math.PI*2);ctx.fillStyle='#64C9EE88';ctx.fill();
+  const t=elapsed*2.5;ctx.save();ctx.strokeStyle='#45BCE8';ctx.lineWidth=2;
+  for(let k=0;k<3;k++){const r=15+((t*25+k*22)%90); ctx.beginPath();ctx.ellipse(cx,523,r*.9,r*.12,0,0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+}
+function jetWidth(y){const p=at(Math.max(0,Math.min(y,state.h)));return Math.max(5,p.d*2300)}
+function drawWater(){
+  const N=110;
+  ctx.save();ctx.beginPath();
+  for(let i=0;i<=N;i++){const yy=state.h*i/N;const xx=cx-jetWidth(yy)/2;const sy=yScreen(yy);if(i===0)ctx.moveTo(xx,sy);else ctx.lineTo(xx,sy)}
+  for(let i=N;i>=0;i--){const yy=state.h*i/N;ctx.lineTo(cx+jetWidth(yy)/2,yScreen(yy))}ctx.closePath();
+  let grad=ctx.createLinearGradient(cx-60,0,cx+60,0);grad.addColorStop(0,'#188EEB');grad.addColorStop(.21,'#45C6FF');grad.addColorStop(.58,'#D5F8FF');grad.addColorStop(.86,'#58CEFA');grad.addColorStop(1,'#1D9CE6');
+  ctx.fillStyle=grad;ctx.shadowBlur=10;ctx.shadowColor='#55C5FF77';ctx.fill();ctx.shadowBlur=0;
+  ctx.clip();
+  for(let n=0;n<12;n++){
+    const f=(n+.5)/12;
+    let tt=elapsed*.65+n*4.4;
+    const py=yTop+((tt*40)%420);
+    const y=physicalY(py);const w=jetWidth(y);
+    line(cx-w*(.35-f*.1),py-11,cx-w*(.32-f*.08),py+11,'#FFFFFF54',1.25);
+  }
+  if(ctl.particles.checked){
+    const tMax=(Math.sqrt(state.v0*state.v0+2*g*state.h)-state.v0)/g;
+    const count=42; const cadence=tMax/count;
+    for(let k=0;k<count;k++){
+      const t=((elapsed+k*cadence)%tMax);const y=state.v0*t+.5*g*t*t;const py=yScreen(y);const w=jetWidth(y);
+      const jitter=Math.sin(k*21.7)*.29;
+      const x=cx+jitter*w;
+      ctx.save();ctx.globalAlpha=.32+(.4*((k%7)/7));ctx.fillStyle='#FFFFFF';ctx.beginPath();ctx.ellipse(x,py,2.0,4.7+Math.min(7,at(y).v*1.1),0,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+  }
+  ctx.restore();
+  ctx.save();ctx.strokeStyle='#268FD1';ctx.lineWidth=1.5;
+  for(let i=0;i<=N;i++){const y=state.h*i/N,sy=yScreen(y),w=jetWidth(y);if(i===0){ctx.beginPath();ctx.moveTo(cx-w/2,sy)}else ctx.lineTo(cx-w/2,sy)}ctx.stroke();
+  ctx.beginPath();for(let i=0;i<=N;i++){const y=state.h*i/N,sy=yScreen(y),w=jetWidth(y);if(i===0)ctx.moveTo(cx+w/2,sy);else ctx.lineTo(cx+w/2,sy)}ctx.stroke();ctx.restore();
+}
+function drawRuler(){
+  const x=56;line(x,yTop,x,yBottom,'#BCD4E2',2);ctx.textAlign='right';ctx.textBaseline='middle';ctx.font='12px system-ui';
+  const tick=state.h>0.7?.1:.05;
+  for(let y=0;y<=state.h+.001;y+=tick){const sy=yScreen(y);line(x,sy,x+9,sy,'#89ABBE',1.5);ctx.fillStyle='#7293A7';ctx.fillText(`${Math.round(y*100)} cm`,x-6,sy)}
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';
+}
+function tag(y,letter,color){
+  const sy=yScreen(y),w=jetWidth(y);line(79,sy,463,sy,color,2,[6,5]);
+  const p=at(y);
+  ctx.save();ctx.fillStyle='white';ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(cx,sy,Math.max(5,w/2),5.2,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(447,sy,16,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 15px system-ui';ctx.fillText(letter,447,sy+.5);ctx.textAlign='left';ctx.textBaseline='alphabetic';
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#F0FAFF');bg.addColorStop(1,'#FFFFFF');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ // subtle vertical backdrop
+ line(cx,yTop,cx,yBottom,'#C8E8F7',1,[4,7]);
+ drawRuler();drawWater();drawFaucet();drawBasin();tag(state.y1,'A','#059AD6');tag(state.y2,'B','#F08439');
+ rounded(345,572,153,25,12,'#E7F7FF');ctx.fillStyle='#28749B';ctx.font='bold 12px system-ui';ctx.fillText(`อัตราการไหลคงที่ ✓`,359,589);
+}
+for(const k of ['v0','d0','h','y1','y2'])ctl[k].addEventListener('input',()=>sync(k)); ctl.particles.addEventListener('change',draw);
+el('pauseBtn').addEventListener('click',()=>{running=!running;el('pauseBtn').textContent=running?'⏸ หยุดภาพ':'▶ เล่นต่อ';el('playState').textContent=running?'● กำลังไหล':'❚❚ หยุดภาพ';draw()});
+el('resetBtn').addEventListener('click',()=>{ctl.v0.value='1';ctl.d0.value='12';ctl.h.value='80';ctl.y1.value='10';ctl.y2.value='60';ctl.particles.checked=true;running=true;elapsed=0;el('pauseBtn').textContent='⏸ หยุดภาพ';el('playState').textContent='● กำลังไหล';sync('h')});
+el('sampleBtn').addEventListener('click',()=>{ctl.y1.value='0';ctl.y2.value=String(+ctl.h.value);sync('y1')});
+function canvasPos(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+canvas.addEventListener('pointerdown',e=>{const p=canvasPos(e);const a=yScreen(state.y1),b=yScreen(state.y2); if(Math.abs(p.y-a)<28 || Math.abs(p.y-b)<28){dragging=Math.abs(p.y-a)<Math.abs(p.y-b)?'y1':'y2';canvas.setPointerCapture(e.pointerId);changeDrag(e)}});
+function changeDrag(e){if(!dragging)return;const p=canvasPos(e), y=Math.round(physicalY(p.y)*100);const h=+ctl.h.value;const lo=dragging==='y1'?0:+ctl.y1.value+1,hi=dragging==='y1'?+ctl.y2.value-1:h;ctl[dragging].value=String(Math.max(lo,Math.min(hi,y)));sync(dragging)}
+canvas.addEventListener('pointermove',changeDrag);canvas.addEventListener('pointerup',()=>dragging=null);canvas.addEventListener('pointercancel',()=>dragging=null);
+function tick(ts){if(!previous)previous=ts;const dt=Math.min(.055,(ts-previous)/1000);previous=ts;if(running){elapsed+=dt;draw()}requestAnimationFrame(tick)}
+sync('h');requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
